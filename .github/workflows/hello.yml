@@ -32,3 +32,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "boiling-sands-18692"
           heroku_email: "niklas.linnanen@aalto.fi"
+          healthcheck: "https://boiling-sands-18692.herokuapp.com/health"
