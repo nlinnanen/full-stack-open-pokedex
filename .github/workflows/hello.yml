@@ -31,7 +31,7 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - uses: akhileshns/heroku-deploy@v3.12.12
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message.slice(-1)), '#skip')}}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "boiling-sands-18692"
@@ -42,7 +42,7 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message.slice(-1)), '#skip')}}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
     steps:
       - uses: actions/checkout@v2
         with:
