@@ -7,9 +7,9 @@ on:
 
 jobs:
   health_check:
-  runs-on: ubuntu-20.04
-  steps:
-    - name: Check the deployed service URL
-      uses: jtalk/url-health-check-action@v2
-      with:
-        url: https://boiling-sands-18692.herokuapp.com/health
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v2
+        with:
+          url: https://boiling-sands-18692.herokuapp.com/health
