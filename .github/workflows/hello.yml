@@ -63,13 +63,19 @@ jobs:
         if: ${{ success() }}
         with:
           severity: info
+          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
           details: Build Succeeded!
+          text: A new version of Pokedex deployed
+          footer: Homma toimii
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Build failure
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
         with:
           severity: error
+          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
           details: commit ${{ github.event.commits[0].url}} by ${{github.event.commits[0].committer.username }}
+          text: Build failed
+          footer: Homma ei toimi
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   
