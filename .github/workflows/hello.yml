@@ -38,7 +38,27 @@ jobs:
           heroku_email: "niklas.linnanen@aalto.fi"
           healthcheck: "https://boiling-sands-18692.herokuapp.com/health"
           checkstring: "ok"
-          rollbackonhealthcheckfailed: true     
+          rollbackonhealthcheckfailed: true   
+      - name: Build successful
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') && success() }}
+        with:
+          severity: info
+          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
+          description: Build Succeeded!
+          text: A new version of Pokedex deployed
+          footer: Homma toimii
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Build failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') && failure()  }}
+        with:
+          severity: error
+          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
+          description: commit ${{ github.event.commits[0].url}} by ${{github.event.commits[0].committer.username }}
+          text: Build failed
+          footer: Homma ei toimi
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}  
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
@@ -53,28 +73,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_OWNER: nlinnanen
           DEFAULT_BUMP: patch
-  discord_notify:
-    runs-on: ubuntu-20.04
-    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
-    steps:
-      - name: Build successful
-        uses: rjstone/discord-webhook-notify@v1
-        if: ${{ success() }}
-        with:
-          severity: info
-          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
-          details: Build Succeeded!
-          text: A new version of Pokedex deployed
-          footer: Homma toimii
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Build failure
-        uses: rjstone/discord-webhook-notify@v1
-        if: ${{ failure() }}
-        with:
-          severity: error
-          avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
-          details: commit ${{ github.event.commits[0].url}} by ${{github.event.commits[0].committer.username }}
-          text: Build failed
-          footer: Homma ei toimi
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
   
