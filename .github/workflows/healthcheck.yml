@@ -3,7 +3,7 @@ name: Health check
 on:
   push:
     branches:
-      -master
+      - master
 
 jobs:
   health_check:
